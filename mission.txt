@@ -1,0 +1,41 @@
+:MOVING PARTS:
+
+Design Philosophy:
+
+Dominion-style kingdom pool
+Both players have equal access to the cards
+Elements get stronger or weaker automatically
+No RNG?
+
+
+Tentative plan:
+
+General-
+
+Central currency + color currency
+3 colors
+9 "heros", X money, +Y money/turn, +1 color currency/turn (phase dependent)
+Day and Night turns, random alternation, shown at game start
+
+Balancing-
+
+hero, initial money
+going first, initial money
+card, Cost
+
+
+Flavor-
+
+Steampunk/rennaisance
+Tech/Religion/Magic? - Gear/Cross/Star currency (G/W/B)
+heros:
+	Inventor - +Gear
+	Zealot - +Cross
+	Wizard - +Star
+	Alchemist - +Star/Day +Gear/Night
+	Witch - +Gear/Day +Star/Night
+	Enlightened - +Gear/Day +Cross/Night
+	Philosopher - +Cross/Day +Gear/Night
+	Mystic - +Star/Day +Cross/Night
+	Sage - +Cross/Day +Star/Night
+		
