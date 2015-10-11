@@ -1,0 +1,11 @@
+basic GUI (board w/ squares)
+
+Purchase panel (click squares, add squares)
+
+End turn
+
+Costs
+
+Attacking player
+
+Economy
