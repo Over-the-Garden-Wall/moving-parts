@@ -9,3 +9,16 @@ Costs
 Attacking player
 
 Economy
+
+
+
+
+
+Organization:
+
+Shop
+	-shop cards
+
+2 players
+	-board
+	-
