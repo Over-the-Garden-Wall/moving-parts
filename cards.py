@@ -32,7 +32,6 @@ class Card(Canvas):
         self.bind("<Button-3>", self.right_click)
         self.bind("<Button-1>", self.left_click)
                   
-        self.create_image(25,25, image = self.img)
         
         #Canvas.__init__(self, *args, **kwargs)
         #super(Card, self).__init__(*args, **kwargs)
@@ -49,8 +48,11 @@ class Card(Canvas):
         else:            
             self.activate()
 
-    def activate():
+    def activate():        
         pass            
+
+    def refresh():
+        pass
 
     def buy_card(self):
         config.active_player.buy_card(self)
@@ -62,6 +64,9 @@ class Card(Canvas):
 class Creature(Card):
     
     combat_state = 0
+    power = 0
+    health = 0
+    card_id = 0    
     #0 = null, 1 = attack, 2 = block low, 3 = block high
     
     def __init__(self, master):
@@ -72,16 +77,15 @@ class Creature(Card):
         Card.__init__(self, master)
         
         self.birth()
-        #print img_str
-        #print self.img        
+        self.refresh()
         
-        #Canvas.__init__(self, *args, **kwargs)
-        #super(Card, self).__init__(*args, **kwargs)
         
     def right_click(self, event):
-        combat_state = combat_state+1        
-        if combat_state == 4:
-            combat_state = 0
+        self.combat_state = self.combat_state+1        
+        if self.combat_state == 4:
+            self.combat_state = 0
+        
+        self.refresh()
             
     def birth(self):
         pass
@@ -89,35 +93,51 @@ class Creature(Card):
     def death(self):
         pass
                 
+    def refresh(self):
+        self.delete("all")
+        self.create_image(25,25, image = self.img)
+        self.create_image(15,40, image = config.numbers[self.power])
+        self.create_image(35,40, image = config.numbers[self.health])
+        if self.owner != -1:
+            self.create_image(40, 10, image = config.combat_icons[self.combat_state])
+            
+        
 
 class Suika1(Creature):
     
     def __init__(self, master):
         self.img = PhotoImage(file = "./images/suika1.gif")            
+        self.cost_money = 200
+        self.power = 2
+        self.health = 1
+        
         Creature.__init__(self, master)
         
-        self.cost_money = 200    
-    
     
 class Suika2(Creature):
 
     def __init__(self, master):
         self.img = PhotoImage(file = "./images/suika2.gif")            
-        Creature.__init__(self, master)
-        
         self.cost_money = 300
+        self.power = 1
+        self.health = 3
     
+        Creature.__init__(self, master)
+
 
 class Suika3(Creature):
     
     def __init__(self, master):
         self.img = PhotoImage(file = "./images/suika3.gif")            
-        Creature.__init__(self, master)
-        
         self.cost_money = 400
+        self.power = 0
+        self.health = 1
+ 
+        Creature.__init__(self, master)
+         
  
     def birth(self):
         config.active_player.money_inc += 200
         
     def death(self):
-        config.active_player.money_inc += 200        
+        config.active_player.money_inc -= 200        

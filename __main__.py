@@ -26,9 +26,20 @@ class Application(Frame):
         self.button_clicks =0 #click counter!
         self.create_players()
         config.active_player = self.player[0]                
+
+        for n in range(10):
+            config.numbers[n] = PhotoImage(file = "./images/number" + str(n) + ".gif")
+        
+        config.combat_icons[0] = PhotoImage(file = "./images/null.gif")
+        config.combat_icons[1] = PhotoImage(file = "./images/combat_attack.gif")
+        config.combat_icons[2] = PhotoImage(file = "./images/combat_block_low.gif")
+        config.combat_icons[3] = PhotoImage(file = "./images/combat_block_high.gif")
+        
         
         self.create_widgets()
         self.cards = []
+        
+        
         
     def create_players(self):
         for n in range(2):
@@ -117,6 +128,13 @@ class Player(object):
         self.green += self.green_inc
         self.info.update_money_labels(self.money, self.blue, self.white, self.green)
                 
+    def sell_card(self, card):
+        self.blue += card.cost_blue
+        self.green += card.cost_green
+        self.white += card.cost_white
+        self.money += card.cost_money
+        self.board.delete_card(card.card_id)
+        self.info.update_money_labels(self.money, self.blue, self.white, self.green)
         
 class Gameboard(Frame):
     num_cards = 0
@@ -131,21 +149,35 @@ class Gameboard(Frame):
         
         class_type = card.__class__
         self.cards.append(class_type(self))
-        
-        #if isinstance(card, Creature):
-        #    self.cards.append(Creature(self, card.name))
-        #else:
-        #    pass
+        self.cards[self.num_cards].card_id = self.num_cards
         
         self.cards[self.num_cards].owner = config.active_player.player_no
+        self.num_cards += 1                
+        
+        self.refresh()
         
         
-        #self.cards[self.num_cards].grid()
-        c = self.num_cards % 8
-        r = int(self.num_cards/8)                        
-        self.cards[self.num_cards].grid(row=r, column=c)
+    def delete_card(self, card_id):
+        for n in range(card_id+1, self.num_cards):
+            self.cards[n].card_id -= 1
         
-        self.num_cards += 1        
+        self.cards[card_id].destroy()
+        self.cards.pop(card_id)
+        self.num_cards -= 1        
+        self.refresh()
+        
+    def refresh(self):
+
+        #self.grid_forget()
+            
+        for n in range(self.num_cards):
+            c = n % config.cards_per_row
+            r = int(n/config.cards_per_row)
+            
+            self.cards[n].grid(row=r, column=c)
+            self.cards[n].refresh()
+            
+            
         
 class Player_info(Frame):
     def __init__(self, master, **kwargs):    
